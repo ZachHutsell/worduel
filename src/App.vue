@@ -23,6 +23,6 @@ export default {
   margin-top: 60px;
 }
 body {
-  background-color: #2c3e50;
+  background-color: #2c3e51;
 }
-</style>
+</style> 
