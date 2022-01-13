@@ -7,7 +7,7 @@
       <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
     </p>
     <div class="container">
-      <div class="col"><input type="text" v-model="currentGuess" v-on:keyup.enter="submitGuess"></div>
+      <input type="text" v-model="currentGuess" v-on:keyup.enter="submitGuess">
     </div>
     <div class="container" v-for="guess in previousGuesses" :key="guess.word">
       <!-- TODO should probably make following a component -->
@@ -70,12 +70,6 @@ a {
 }
 .item {
   display: flex;
-  gap: 15px;
-  justify-content: center;
-}
-.col {
-  display: flex;
-  flex-direction: column;
   gap: 15px;
   justify-content: center;
 }
