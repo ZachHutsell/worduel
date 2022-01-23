@@ -1,0 +1,19 @@
+.row {
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+.row-letter {
+  margin: 2px;
+  border: 2px solid rgba(128, 128, 128, 0.8);
+  flex: 1;
+  max-width: 40px;
+  height: 40px;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
