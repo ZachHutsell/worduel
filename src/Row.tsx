@@ -1,58 +1,35 @@
 import React from "react";
-import './Row.css';
+import {Clue, CluedLetter } from "./clue";
+import "./Row.css";
 
-enum Condition {
-    Clicked,
-    NotClicked
-}
-type MyState = { message: string, className: string, condition: Condition }
-
-const defaultState: MyState = {
-    message: 'has not been clicked :(',
-    className: '',
-    condition: Condition.NotClicked
+interface RowProps {
+  cluedLetters: CluedLetter[];
 }
 
-const clickedState: MyState = {
-    message: 'has been clicked!',
-    className: 'clicked',
-    condition: Condition.Clicked
-}
+export function getClueClass(clue?: Clue): string {
+    if (clue === undefined || clue === Clue.Absent) {
+      return "letter-absent";
+    } else if (clue === Clue.Elsewhere) {
+      return "letter-elsewhere";
+    } else {
+      return "letter-correct";
+    }
+  }
 
-class Row extends React.Component<any, MyState> {
-    constructor(props: any) {
-        super(props);
-        this.state = defaultState;
+class Row extends React.Component<RowProps, any> {
+  render() {
+    let tds = [];
 
+    for (let i = 0; i < this.props.cluedLetters.length; i++) {
+      const cluedLetter = this.props.cluedLetters[i];
+      tds.push(
+        <td key={cluedLetter.letter} className={"row-letter " + getClueClass(cluedLetter.clue)}>
+          {cluedLetter.letter}
+        </td>
+      );
     }
-    onHeaderClick() {
-        if (this.state.condition === Condition.NotClicked) {
-            this.setState(clickedState);
-        }
-    }
-    onButtonClick() {
-        this.setState(defaultState);
-    }
-    render() {
-        const clicked = this.state.condition === Condition.Clicked;
-        let button;
-        if (clicked) {
-            button = <button className="btn" onClick={() => this.onButtonClick()}>reset!</button>;
-        }
-        return (
-            // <div className="container">
-            //     <p className="message + {this.state.className}" onClick={() => this.onHeaderClick()}>This row {this.state.message}</p>
-            //     {button}
-            // </div>
-            <tr className="row">
-                <td className="row-letter">A</td>
-                <td className="row-letter">B</td>
-                <td className="row-letter">C</td>
-                <td className="row-letter">D</td>
-                <td className="row-letter">E</td>
-            </tr>
-        )
-    }
+    return <tr className="row">{tds}</tr>;
+  }
 }
 
 export default Row;

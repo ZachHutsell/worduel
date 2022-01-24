@@ -11,14 +11,17 @@ class WordInput extends React.Component<any, any> {
     if (event.key === "Enter") {
       if (val.length === this.props.maxLength) {
         this.props.onEnter(val);
-        const node = this.inputRef.current;
-        if(node != null ){
-            node.value = '';
-        }
+        this.resetInput();
       }
     }
   };
-  render(): React.ReactNode {
+  resetInput = () => {
+    const currentRef = this.inputRef.current;
+    if (currentRef != null) {
+      currentRef.value = "";
+    }
+  };
+  render() {
     return (
       <div className="word-input-container">
         <input
