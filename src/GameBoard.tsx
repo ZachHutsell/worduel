@@ -19,6 +19,7 @@ class GameBoard extends React.Component<any, GameBoardState> {
     };
   }
   onWordInputEnter = (enteredWord: string) => {
+    this.props.socket.emit("guess", enteredWord);
     let guesses = this.state.guesses;
     guesses.push(enteredWord);
     this.setState({
