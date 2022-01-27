@@ -12,15 +12,19 @@ function App() {
   useEffect(() => {
     const newSocket = io(`http://${window.location.hostname}:5000`);
     setSocket(newSocket);
-    return () => {newSocket.close();}
+    return () => { newSocket.close(); }
   }, [setSocket]);
+
+  if (socket == null) {
+    return null;
+  }
 
   return (
     <div>
       <div className="heading-container">
         <h1>Worduel</h1>
       </div>
-      <GameBoard socket={socket}/>
+      <GameBoard socket={socket} />
     </div>
   );
 }

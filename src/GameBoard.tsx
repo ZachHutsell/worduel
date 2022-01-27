@@ -6,31 +6,30 @@ import './GameBoard.css'
 
 interface GameBoardState {
   maxLength: number;
-  target: string;
-  guesses: string[];
+  clues: CluedLetter[][];
 }
 class GameBoard extends React.Component<any, GameBoardState> {
   constructor(props: any) {
     super(props);
     this.state = {
       maxLength: 5,
-      target: "WORDS",
-      guesses: ["ALERT"],
+      clues: [],
     };
   }
   onWordInputEnter = (enteredWord: string) => {
     this.props.socket.emit("guess", enteredWord);
-    let guesses = this.state.guesses;
-    guesses.push(enteredWord);
-    this.setState({
-      guesses: guesses,
+  };
+  componentDidMount() {
+    this.props.socket.on('clues', (clues: CluedLetter[]) => {
+      let clueState: CluedLetter[][] = this.state.clues;
+      clueState.push(clues);
+      this.setState({ clues: clueState })
     });
   };
   render() {
     let rows: any[] = [];
-    for (let guess of this.state.guesses) {
-      const cluedLetters: CluedLetter[] = getClues(guess, this.state.target);
-      rows.push(<Row key={guess} cluedLetters={cluedLetters} />);
+    for (let clue of this.state.clues) {
+      rows.push(<Row cluedLetters={clue} />);
     }
     return (
       <div>
@@ -40,7 +39,7 @@ class GameBoard extends React.Component<any, GameBoardState> {
         </table>
       </div>
     );
-  }
+  };
 }
 
 export default GameBoard;

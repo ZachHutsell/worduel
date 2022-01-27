@@ -10,6 +10,28 @@ const io = new Server(httpServer, {
   /* options */
 });
 
+function getClues(solution, word) {
+  word = word.toLowerCase();
+  let elusive = [];
+  solution.split('').forEach((letter, i) => {
+    if (word[i] !== letter) {
+      elusive.push(letter);
+    }
+  });
+  return word.split('').map((letter, i) => {
+    let j;
+    if (solution[i] === letter) {
+      return { clue: 2, letter };
+    } else if ((j = elusive.indexOf(letter)) > -1) {
+      // "use it up" so we don't clue at it twice
+      elusive[j] = '';
+      return { clue: 1, letter };
+    } else {
+      return { clue: 0, letter };
+    }
+  });
+}
+
 let games = {};
 
 app.use(express.static(path.join(__dirname, '..', 'build')));
@@ -58,10 +80,7 @@ io.on('connection', function (socket) {
     'guess',
     function (guess) {
       console.log(guess);
-      if (guess == this.word.toUpperCase()) {
-        console.log('WINNER');
-        socket.emit('win');
-      }
+      socket.emit('clues', getClues(this.word, guess));
     }.bind(this)
   );
   socket.id = Math.random();
