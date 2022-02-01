@@ -8,9 +8,8 @@ import { useEffect, useState } from 'react';
 function App() {
   const [socket, setSocket] = useState<Socket>();
 
-
   useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:5000`);
+    const newSocket = io();
     setSocket(newSocket);
     return () => { newSocket.close(); }
   }, [setSocket]);
